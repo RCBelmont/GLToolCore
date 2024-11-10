@@ -13,6 +13,7 @@ from pathlib import Path
 import moderngl as mgl
 import Core.Utils.image_utils as iu
 import Core.Utils.format_define as fd
+from PIL import Image
 
 
 # region FormatConvert
@@ -306,4 +307,16 @@ def tex_util_create_texture_cube_with_img(context: mgl.Context, files: list):
             idx = f_len - 1
         tex_cube.write(i, image_bytes_list[i])
     return tex_cube
+
+
 # endregion
+
+def tex_util_texture_to_PIL_Image(tex: mgl.Texture, mode='RGBA'):
+    '''
+    2D纹理对象转PIL Image对象
+    :param tex:
+    :return:
+    '''
+    img = tex_util_texture_to_img(tex)
+    img = iu.img_util_to_uint8(img)
+    return Image.fromarray(img, mode)
