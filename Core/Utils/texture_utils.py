@@ -10,9 +10,10 @@ import sys
 
 import numpy
 from pathlib import Path
+
 import moderngl as mgl
-import Core.Utils.image_utils as iu
-import Core.Utils.format_define as fd
+from ..Utils import image_utils as iu
+from ..Utils import format_define as fd
 from PIL import Image
 
 

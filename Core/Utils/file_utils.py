@@ -6,16 +6,17 @@ Description:
 
 """
 import os
-import Core
 import sys
 
+def is_frozen():
+    return getattr(sys, 'frozen', False)
 
 def file_utils_get_root_path():
     '''
     获取根目录路径
     :return:
     '''
-    if Core.is_frozen():
+    if is_frozen():
         return os.path.join(os.getcwd(), "Data")
     return os.getcwd()
 

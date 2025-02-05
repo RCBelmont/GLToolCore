@@ -9,13 +9,13 @@ import os
 import moderngl as mgl
 
 os.environ['OPENCV_IO_ENABLE_OPENEXR'] = '1'
-# root_path = os.path.dirname(__file__)
-# if os.path.exists(root_path):
-#     sys.path.append(root_path)
-#     for d in os.listdir(root_path):
-#         full_path = os.path.join(root_path, d)
-#         if os.path.isdir(full_path):
-#             sys.path.append(full_path)
+root_path = os.path.dirname(__file__)
+if os.path.exists(root_path):
+    sys.path.append(root_path)
+    for d in os.listdir(root_path):
+        full_path = os.path.join(root_path, d)
+        if os.path.isdir(full_path):
+            sys.path.append(full_path)
 
 
 def create_contex_standalone(gl_version=430) -> mgl.Context:
