@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 
-def img_util_show_img(imgs: list):
+def img_util_show_img(imgs: [numpy.ndarray]):
     i = 0
     for img in imgs:
         plt.figure(i)
