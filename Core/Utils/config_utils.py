@@ -4,32 +4,53 @@ AUTHOR: RCB
 CREATED: 2024/4/28-18:11
 DESC:管理一些默认配置
 """
-
+import json
 import sys
 import os
 
+config_base = os.path.expanduser('~\\AppData\\Local\\GLToolsConfig')
 
-class ConfigUtilsMgr:
+
+class CommonConfigMgr(object):
     _instance = None
-
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = super(ConfigUtilsMgr, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super(CommonConfigMgr, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
-    def __init__(self):
-        self.DEFAULT_SHADER_ROOT = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Shaders')
 
-    def get_shader_root(self) -> str:
-        return self.DEFAULT_SHADER_ROOT
+class ConfigMgr:
+    data_dict = {}
+    def __init__(self, key):
+        self.main_key = key
+        self.load_cfg_data()
 
-    def get_shader_path(self, shader_name: str) -> str:
-        if not shader_name.endswith('.glsl'):
-            raise Exception('Shader文件名必须以.glsl结尾 {} 不正确'.format(shader_name))
-        shader_path = os.path.join(self.DEFAULT_SHADER_ROOT, shader_name)
-        if not os.path.exists(shader_path):
-            raise Exception('Shader文件不存在：{}'.format(shader_path))
-        return os.path.join(self.DEFAULT_SHADER_ROOT, shader_name)
+    def make_cfg_file_name(self):
+        file_path = os.path.join(config_base, self.main_key, "setting.json")
+        return file_path
 
-def get_config_utils_mgr() -> ConfigUtilsMgr:
-    return ConfigUtilsMgr()
+    # 加载配置
+    def load_cfg_data(self):
+        file_path = self.make_cfg_file_name()
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                self.data_dict = json.load(f)
+        else:
+            self.data_dict = {}
+
+    # 保存配置
+    def save_cfg_data(self):
+        file_path = self.make_cfg_file_name()
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))
+        with open(file_path, "w") as f:
+            json.dump(self.data_dict, f, indent=4)
+
+    def get_data(self, sub_key, default_value=None):
+        if sub_key not in self.data_dict:
+            return default_value
+        return self.data_dict[sub_key]
+
+    def set_data(self, sub_key, value):
+        self.data_dict[sub_key] = value
+        self.save_cfg_data()

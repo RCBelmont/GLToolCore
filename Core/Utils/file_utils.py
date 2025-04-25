@@ -43,7 +43,13 @@ def file_utils_get_default_shader_path(shader_name: str):
     :param shader_name:
     :return:
     '''
-    shader_path = os.path.join(file_util_get_entry_path(), "Shaders", shader_name)
+    if is_frozen():
+        shader_path = os.path.join(sys._MEIPASS, "Shaders", shader_name)
+    else:
+        shader_path = os.path.join(file_util_get_entry_path(), "Shaders", shader_name)
     if not os.path.exists(shader_path):
         raise FileNotFoundError(f"Shader file not found: {shader_path}")
     return shader_path
+
+
+
