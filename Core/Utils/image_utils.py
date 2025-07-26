@@ -44,7 +44,7 @@ def img_util_read_img(file_path: str) -> numpy.ndarray:
 
 def img_util_save_img(file_path: str, img: numpy.ndarray):
     if file_path.endswith('.hdr'):
-        img = cv2.cvtColor(img, cv2.COLOR_RGBA2BGR)
+        img = cv2.cvtColor(img, cv2.COLOR_RGBA2BGRA)
         cv2.imwrite(file_path, img)
     elif file_path.endswith('.exr'):
         img = img_util_to_float32(img)
